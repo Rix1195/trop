@@ -1,3 +1,5 @@
+import {Link} from "react-router-dom";
+
 export default function LoginScreen() {
   return (
     <div className="flex flex-col items-center justify-center h-[90vh] p-3 gap-6">
@@ -18,6 +20,13 @@ export default function LoginScreen() {
           Zaloguj się
         </button>
       </form>
+
+      <p className="text-3xl mt-6">
+        Nie masz konta?{" "}
+        <Link to="/signUp" className="font-semibold text-blue-500">
+          Zarejestruj się!
+        </Link>
+      </p>
     </div>
   );
 }
