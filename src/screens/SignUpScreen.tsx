@@ -22,7 +22,7 @@ export default function LoginScreen() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-[90vh] p-3 gap-6">
+    <div className="flex flex-col items-center justify-center h-[90vh] p-3 gap-6 sm:pt-0 pt-52">
       <h1>Zarejestruj się</h1>
 
       <form className="w-full flex flex-col gap-5" onSubmit={signUp}>
@@ -68,7 +68,7 @@ export default function LoginScreen() {
 
       <p className="text-3xl mt-6">
         Masz konto?{" "}
-        <Link to="/login" className="font-semibold text-blue-500">
+        <Link to="/login" className="font-semibold text-blue-500 text-center">
           Zaloguj się!
         </Link>
       </p>
