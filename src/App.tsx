@@ -3,6 +3,9 @@ import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import SignUpScreen from "./screens/SignUpScreen";
 import MainScreensLayout from "./screens/MainScreensLayout";
+import ProfileScreen from "./screens/ProfileScreen";
+import DashboardScreensLayout from "./screens/DashboardScreensLayout";
+import {AuthContextProvider} from "./store/auth-context";
 
 function App() {
   const router = createBrowserRouter([
@@ -24,9 +27,23 @@ function App() {
         },
       ],
     },
+    {
+      path: "/app",
+      element: <DashboardScreensLayout />,
+      children: [
+        {
+          path: "profile",
+          element: <ProfileScreen />,
+        },
+      ],
+    },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <AuthContextProvider>
+      <RouterProvider router={router} />
+    </AuthContextProvider>
+  );
 }
 
 export default App;

@@ -1,7 +1,8 @@
 import {createUserWithEmailAndPassword} from "firebase/auth";
 import {FormEvent, useState} from "react";
-import {auth} from "../firebase/firebase";
+import {auth, db} from "../firebase/firebase";
 import {Link} from "react-router-dom";
+import {doc, setDoc} from "firebase/firestore";
 
 export default function LoginScreen() {
   const [name, setName] = useState("");
@@ -14,9 +15,29 @@ export default function LoginScreen() {
 
     setIsLoading(true);
 
-    await createUserWithEmailAndPassword(auth, email, password).catch((err) =>
-      alert(err)
-    );
+    await createUserWithEmailAndPassword(auth, email, password)
+      .then((user) => {
+        const usersRef = doc(db, "users", user.user.uid);
+
+        console.log({
+          name,
+          email,
+          id: user.user.uid,
+          project: null,
+          projectId: null,
+          isLeader: false,
+        });
+
+        setDoc(usersRef, {
+          name,
+          email,
+          id: user.user.uid,
+          project: null,
+          projectId: null,
+          isLeader: false,
+        }).catch((err) => alert(err));
+      })
+      .catch((err) => alert(err));
 
     setIsLoading(false);
   }
