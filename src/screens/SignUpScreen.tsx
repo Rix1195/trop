@@ -1,7 +1,7 @@
 import {createUserWithEmailAndPassword} from "firebase/auth";
 import {FormEvent, useState} from "react";
 import {auth, db} from "../firebase/firebase";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {doc, setDoc} from "firebase/firestore";
 
 export default function LoginScreen() {
@@ -9,6 +9,8 @@ export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   async function signUp(event: FormEvent) {
     event.preventDefault();
@@ -19,15 +21,6 @@ export default function LoginScreen() {
       .then((user) => {
         const usersRef = doc(db, "users", user.user.uid);
 
-        console.log({
-          name,
-          email,
-          id: user.user.uid,
-          project: null,
-          projectId: null,
-          isLeader: false,
-        });
-
         setDoc(usersRef, {
           name,
           email,
@@ -37,6 +30,7 @@ export default function LoginScreen() {
           isLeader: false,
         }).catch((err) => alert(err));
       })
+      .then(() => navigate("/app/profile"))
       .catch((err) => alert(err));
 
     setIsLoading(false);

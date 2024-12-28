@@ -11,13 +11,19 @@
   h1 {
     @apply sm:text-8xl text-7xl font-semibold text-center;
   }
+  h2 {
+    @apply sm:text-6xl text-5xl font-semibold text-center;
+  }
   p {
-    @apply text-xl;
+    @apply sm:text-2xl text-xl;
   }
   button {
     @apply text-white bg-blue-500 px-6 py-3 text-3xl hover:bg-blue-600 duration-75;
   }
   input {
     @apply p-2 border-[3px] border-black focus:outline-none text-2xl focus:border-blue-500 w-full;
+  }
+  .separator {
+    @apply h-2 w-full bg-gray-400 rounded my-6;
   }
 }

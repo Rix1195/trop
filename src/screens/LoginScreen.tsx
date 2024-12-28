@@ -1,18 +1,20 @@
 import {signInWithEmailAndPassword} from "firebase/auth";
 import {FormEvent, useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {auth} from "../firebase/firebase";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigate = useNavigate();
+
   function login(event: FormEvent) {
     event.preventDefault();
 
-    signInWithEmailAndPassword(auth, email, password).catch((err) =>
-      alert(err)
-    );
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => navigate("/app/profile"))
+      .catch((err) => alert(err));
   }
 
   return (

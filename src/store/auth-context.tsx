@@ -1,9 +1,12 @@
-import {createContext, ReactNode, useState} from "react";
-import {auth} from "../firebase/firebase";
+import {createContext, ReactNode, useEffect, useState} from "react";
+import {auth, db} from "../firebase/firebase";
 import {User} from "firebase/auth";
+import {doc, getDoc} from "firebase/firestore";
+import {UserData} from "../types/types";
 
 interface AuthContextReturnType {
   user: User | null;
+  userData: UserData | null;
 }
 
 export const AuthContext = createContext<AuthContextReturnType | null>(null);
@@ -15,6 +18,7 @@ interface Props {
 export const AuthContextProvider = ({children}: Props) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState<UserData | null>(null);
 
   auth.onAuthStateChanged((currentUser) => {
     if (currentUser) {
@@ -24,8 +28,21 @@ export const AuthContextProvider = ({children}: Props) => {
     setLoading(false);
   });
 
+  useEffect(() => {
+    if (user) {
+      const userDoc = doc(db, "users", user.uid);
+
+      (async () => {
+        await getDoc(userDoc).then((doc) =>
+          setUserData(doc.data() as UserData)
+        );
+      })();
+    }
+  }, [user]);
+
   const value = {
     user,
+    userData,
   };
 
   return (
