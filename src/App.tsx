@@ -6,6 +6,8 @@ import MainScreensLayout from "./screens/MainScreensLayout";
 import ProfileScreen from "./screens/ProfileScreen";
 import DashboardScreensLayout from "./screens/DashboardScreensLayout";
 import {AuthContextProvider} from "./store/auth-context";
+import ProjectScreen from "./screens/ProjectScreen";
+import CreateProjectScreen from "./screens/CreateProjectScreen";
 
 function App() {
   const router = createBrowserRouter([
@@ -34,6 +36,14 @@ function App() {
         {
           path: "profile",
           element: <ProfileScreen />,
+        },
+        {
+          path: "project",
+          element: <ProjectScreen />,
+        },
+        {
+          path: "project/create",
+          element: <CreateProjectScreen />,
         },
       ],
     },

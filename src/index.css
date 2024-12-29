@@ -20,8 +20,9 @@
   button {
     @apply text-white bg-blue-500 px-6 py-3 text-3xl hover:bg-blue-600 duration-75;
   }
-  input {
-    @apply p-2 border-[3px] border-black focus:outline-none text-2xl focus:border-blue-500 w-full;
+  input,
+  textarea {
+    @apply p-2 border-[3px] border-black focus:outline-none text-2xl focus:border-blue-500 w-full resize-none;
   }
   .separator {
     @apply h-2 w-full bg-gray-400 rounded my-6;
