@@ -9,10 +9,10 @@
     font-family: "Outfit", sans-serif;
   }
   h1 {
-    @apply sm:text-8xl text-7xl font-semibold text-center;
+    @apply sm:text-8xl text-7xl font-semibold;
   }
   h2 {
-    @apply sm:text-6xl text-5xl font-semibold text-center;
+    @apply sm:text-6xl text-5xl font-semibold;
   }
   p {
     @apply sm:text-2xl text-xl;
@@ -26,5 +26,8 @@
   }
   .separator {
     @apply h-2 w-full bg-gray-400 rounded my-6;
+  }
+  .vertical-separator {
+    @apply bg-gray-400 rounded w-2 mx-6;
   }
 }

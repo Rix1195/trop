@@ -6,3 +6,13 @@ export interface UserData {
   name: string;
   isLeader: boolean;
 }
+
+export interface Project {
+  code: string;
+  goal: string;
+  name: string;
+  leader: string;
+  team: string;
+  members: Array<string>;
+  tasks: Map<string, string>;
+}

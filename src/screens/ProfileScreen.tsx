@@ -14,7 +14,7 @@ export default function ProfileScreen() {
   }
 
   return (
-    <div className="p-3 flex flex-col items-center">
+    <div className="p-3 flex flex-col">
       <h1>
         Witaj, <span className="text-blue-500">{userData?.name}</span>
       </h1>
@@ -23,15 +23,16 @@ export default function ProfileScreen() {
 
         <ul className="text-3xl  mt-3">
           <li>
-            Email:{" "}
-            <span className="text-blue-500 font-semibold">
-              {userData?.email}
-            </span>
-          </li>
-          <li>
             Imię:{" "}
             <span className="text-blue-500 font-semibold">
               {userData?.name}
+            </span>
+          </li>
+
+          <li>
+            Email:{" "}
+            <span className="text-blue-500 font-semibold">
+              {userData?.email}
             </span>
           </li>
         </ul>
@@ -41,13 +42,13 @@ export default function ProfileScreen() {
         <h2>Twój trop</h2>
 
         {userData?.projectId ? (
-          <div className="mt-3 flex flex-col items-center">
+          <div className="mt-3 flex flex-col ">
             <ul className="text-2xl">
               <li>Nazwa tropu: {userData.project}</li>
               <li>Lider tropu: {userData.isLeader ? "Tak" : "Nie"}</li>
             </ul>
 
-            <button className="mt-5">Zobacz swój trop</button>
+            <button className="mt-5 self-start">Zobacz swój trop</button>
           </div>
         ) : (
           <div className="mt-3">
@@ -66,7 +67,9 @@ export default function ProfileScreen() {
 
       <div className="separator"></div>
 
-      <button onClick={signOut}>Wyloguj się</button>
+      <button onClick={signOut} className="self-start">
+        Wyloguj się
+      </button>
     </div>
   );
 }

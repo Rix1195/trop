@@ -3,13 +3,14 @@ import {db} from "../firebase/firebase";
 import {FormEvent, useState} from "react";
 import useAuth from "../hooks/useAuth";
 import {useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 export default function CreateProjectScreen() {
   const [name, setName] = useState("");
   const [team, setTeam] = useState("");
   const [goal, setGoal] = useState("");
 
-  const {user} = useAuth();
+  const {user, userData} = useAuth();
 
   const navigate = useNavigate();
 
@@ -26,13 +27,9 @@ export default function CreateProjectScreen() {
       team,
       goal,
       code: projectId,
-    });
-
-    console.log({
-      name,
-      team,
-      goal,
-      code: projectId,
+      leader: userData?.name,
+      members: [userData?.email],
+      tasks: new Map([]),
     });
 
     const usersRef = doc(db, "users", user?.uid ? user?.uid : "");
@@ -60,59 +57,77 @@ export default function CreateProjectScreen() {
   }
 
   return (
-    <div className="p-3">
-      <h1>Stwórz trop</h1>
+    <div className="p-3 h-screen">
+      {userData?.projectId ? (
+        <>
+          <div className="flex justify-center items-center h-full flex-col gap-3">
+            <h1 className="text-center">Jesteś juz w zespole!</h1>
+            <p className="text-center">
+              Nie mozesz stworzyc tropu, jesli do jednego nalezysz! Opuść trop,
+              a następnie wróć tu!
+            </p>
 
-      <form className="flex flex-col gap-6 mt-4" onSubmit={createProject}>
-        <div>
-          <p>Nazwa tropu</p>
-          <input
-            type="text"
-            className="w-full"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            minLength={8}
-            maxLength={60}
-          />
-        </div>
+            <Link to="/app/project">
+              <button>Zobacz swój trop</button>
+            </Link>
+          </div>
+        </>
+      ) : (
+        <>
+          <h1>Stwórz trop</h1>
 
-        <div>
-          <p>Nazwa patrolu</p>
-          <input
-            type="text"
-            className="w-full"
-            value={team}
-            onChange={(e) => setTeam(e.target.value)}
-            minLength={4}
-            maxLength={30}
-          />
-        </div>
+          <form className="flex flex-col gap-6 mt-4" onSubmit={createProject}>
+            <div>
+              <p>Nazwa tropu</p>
+              <input
+                type="text"
+                className="w-full"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                minLength={8}
+                maxLength={60}
+              />
+            </div>
 
-        <div>
-          <p>Cel</p>
-          <textarea
-            rows={5}
-            value={goal}
-            onChange={(e) => setGoal(e.target.value)}
-            minLength={10}
-            maxLength={90}
-          ></textarea>
-        </div>
+            <div>
+              <p>Nazwa patrolu</p>
+              <input
+                type="text"
+                className="w-full"
+                value={team}
+                onChange={(e) => setTeam(e.target.value)}
+                minLength={4}
+                maxLength={30}
+              />
+            </div>
 
-        <section>
-          <h2>Uwaga!</h2>
-          <p className="text-center">
-            Jeśli stworzysz trop aplikacja oznaczy Ciebie jako patrolowego! Nie
-            ma mozliwości "przekazania" tropu, więc jeśli masz być tylko jego
-            uczestnikiem po prostu dołącz do tropu stworzonego przez faktycznego
-            patrolowego.
-          </p>
-        </section>
+            <div>
+              <p>Cel</p>
+              <textarea
+                rows={5}
+                value={goal}
+                onChange={(e) => setGoal(e.target.value)}
+                minLength={10}
+                maxLength={90}
+              ></textarea>
+            </div>
 
-        <button type="submit" className="self-center">
-          Dodaj trop
-        </button>
-      </form>
+            <section>
+              <h2>Uwaga!</h2>
+              <p className="text-center">
+                Jeśli stworzysz trop aplikacja oznaczy Ciebie jako patrolowego!
+                Nie ma mozliwości "przekazania" tropu, więc jeśli masz być tylko
+                jego uczestnikiem po prostu dołącz do tropu stworzonego przez
+                faktycznego patrolowego.
+              </p>
+            </section>
+
+            <button type="submit" className="self-center">
+              Dodaj trop
+            </button>
+          </form>
+        </>
+      )}
     </div>
   );
 }
