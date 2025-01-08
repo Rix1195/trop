@@ -2,7 +2,6 @@ import {doc, writeBatch} from "firebase/firestore";
 import {db} from "../firebase/firebase";
 import {FormEvent, useState} from "react";
 import useAuth from "../hooks/useAuth";
-import {useNavigate} from "react-router-dom";
 import {Link} from "react-router-dom";
 
 export default function CreateProjectScreen() {
@@ -11,8 +10,6 @@ export default function CreateProjectScreen() {
   const [goal, setGoal] = useState("");
 
   const {user, userData} = useAuth();
-
-  const navigate = useNavigate();
 
   async function createProject(event: FormEvent) {
     event.preventDefault();
@@ -29,7 +26,7 @@ export default function CreateProjectScreen() {
       code: projectId,
       leader: userData?.name,
       members: [userData?.email],
-      tasks: new Map([]),
+      membersNames: [userData?.name],
     });
 
     const usersRef = doc(db, "users", user?.uid ? user?.uid : "");
@@ -41,7 +38,7 @@ export default function CreateProjectScreen() {
 
     await batch
       .commit()
-      .then(() => navigate("/app/project"))
+      .then(() => location.replace("/app/project"))
       .catch((err) => alert(err));
   }
 
@@ -108,13 +105,13 @@ export default function CreateProjectScreen() {
                 value={goal}
                 onChange={(e) => setGoal(e.target.value)}
                 minLength={10}
-                maxLength={90}
+                maxLength={300}
               ></textarea>
             </div>
 
             <section>
               <h2>Uwaga!</h2>
-              <p className="text-center">
+              <p>
                 Jeśli stworzysz trop aplikacja oznaczy Ciebie jako patrolowego!
                 Nie ma mozliwości "przekazania" tropu, więc jeśli masz być tylko
                 jego uczestnikiem po prostu dołącz do tropu stworzonego przez
