@@ -11,9 +11,9 @@ export const Popup = forwardRef<HTMLDialogElement, Props>(function Popup(
   ref
 ) {
   return (
-    <dialog ref={ref} className="p-3 w-[80vw]">
+    <dialog ref={ref} className="p-3 w-[80vw] max-h-[90vh]">
       <div className="flex justify-between">
-        <h1 className="text-6xl mb-6">{title}</h1>
+        <h1 className="sm:text-6xl text-4xl mb-6">{title}</h1>
         {ref && "current" in ref && (
           <button
             className="bg-white text-black hover:bg-white"

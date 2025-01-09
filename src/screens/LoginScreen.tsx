@@ -1,20 +1,24 @@
 import {signInWithEmailAndPassword} from "firebase/auth";
 import {FormEvent, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {auth} from "../firebase/firebase";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   function login(event: FormEvent) {
     event.preventDefault();
 
+    setLoading(true);
+
     signInWithEmailAndPassword(auth, email, password)
-      .then(() => navigate("/app/profile"))
+      .then(() => location.replace("/app/profile"))
       .catch((err) => alert(err));
+
+    setLoading(false);
   }
 
   return (
@@ -42,7 +46,7 @@ export default function LoginScreen() {
           />
         </div>
 
-        <button type="submit" className="self-center">
+        <button type="submit" className="self-center" disabled={loading}>
           Zaloguj się
         </button>
       </form>

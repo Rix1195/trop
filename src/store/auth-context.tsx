@@ -47,7 +47,13 @@ export const AuthContextProvider = ({children}: Props) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {loading ? "Ładowanie..." : children}
+      {loading ? (
+        <div className="h-[90vh] flex justify-center items-center">
+          <p>Ładowanie...</p>
+        </div>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 };

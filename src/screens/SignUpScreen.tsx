@@ -1,21 +1,19 @@
 import {createUserWithEmailAndPassword} from "firebase/auth";
 import {FormEvent, useState} from "react";
 import {auth, db} from "../firebase/firebase";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {doc, setDoc} from "firebase/firestore";
 
 export default function LoginScreen() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   async function signUp(event: FormEvent) {
     event.preventDefault();
 
-    setIsLoading(true);
+    setLoading(true);
 
     await createUserWithEmailAndPassword(auth, email, password)
       .then((user) => {
@@ -30,10 +28,10 @@ export default function LoginScreen() {
           isLeader: false,
         }).catch((err) => alert(err));
       })
-      .then(() => navigate("/app/profile"))
+      .then(() => location.replace("/app/profile"))
       .catch((err) => alert(err));
 
-    setIsLoading(false);
+    setLoading(false);
   }
 
   return (
@@ -72,11 +70,7 @@ export default function LoginScreen() {
           />
         </div>
 
-        <button
-          type="submit"
-          className="self-center disabled:opacity-65"
-          disabled={isLoading}
-        >
+        <button type="submit" className="self-center " disabled={loading}>
           Zarejestruj się
         </button>
       </form>

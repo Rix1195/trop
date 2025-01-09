@@ -69,7 +69,9 @@ export default function ProfileScreen() {
                 <li>Lider tropu: {userData.isLeader ? "Tak" : "Nie"}</li>
               </ul>
 
-              <button className="mt-5 self-start">Zobacz swój trop</button>
+              <Link to="/app/project">
+                <button className="mt-5 self-start">Zobacz swój trop</button>
+              </Link>
             </div>
           ) : (
             <div className="mt-3">
@@ -90,7 +92,10 @@ export default function ProfileScreen() {
 
         <div className="separator"></div>
 
-        <button onClick={signOut} className="self-start">
+        <button
+          onClick={signOut}
+          className="self-start bg-red-500 hover:bg-red-600"
+        >
           Wyloguj się
         </button>
       </div>

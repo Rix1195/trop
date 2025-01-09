@@ -9,10 +9,14 @@ export default function CreateProjectScreen() {
   const [team, setTeam] = useState("");
   const [goal, setGoal] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const {user, userData} = useAuth();
 
   async function createProject(event: FormEvent) {
     event.preventDefault();
+
+    setLoading(true);
 
     const projectId = generateCode(6);
 
@@ -40,6 +44,8 @@ export default function CreateProjectScreen() {
       .commit()
       .then(() => location.replace("/app/project"))
       .catch((err) => alert(err));
+
+    setLoading(false);
   }
 
   function generateCode(length: number) {
@@ -119,7 +125,7 @@ export default function CreateProjectScreen() {
               </p>
             </section>
 
-            <button type="submit" className="self-center">
+            <button type="submit" className="self-center" disabled={loading}>
               Dodaj trop
             </button>
           </form>

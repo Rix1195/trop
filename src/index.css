@@ -21,7 +21,7 @@
     @apply sm:text-2xl text-xl;
   }
   button {
-    @apply text-white bg-blue-500 px-6 py-3 text-3xl hover:bg-blue-600 duration-75;
+    @apply text-white bg-blue-500 px-6 py-3 text-3xl hover:bg-blue-600 duration-75 disabled:opacity-65;
   }
   input,
   textarea {
@@ -29,5 +29,8 @@
   }
   .separator {
     @apply h-2 bg-gray-400 rounded my-6;
+  }
+  .horizontal-separator {
+    @apply w-full h-2 bg-gray-400 rounded;
   }
 }

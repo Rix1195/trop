@@ -1,14 +1,39 @@
 import {collection, doc, getDoc, getDocs, Timestamp} from "firebase/firestore";
-import {useEffect, useState} from "react";
+import {ReactNode, useEffect, useRef, useState} from "react";
 import {db} from "../firebase/firebase";
 import useAuth from "../hooks/useAuth";
 import {Project, Task} from "../types/types";
 import {Link} from "react-router-dom";
+import {IoAdd, IoSettingsOutline} from "react-icons/io5";
+import {Popup} from "../components/Popup";
+import ProjectSettings from "../components/ProjectSettings";
+import ProjectData from "../components/ProjectData";
 
 export default function ProjectScreen() {
   const {userData} = useAuth();
   const [project, setProject] = useState<Project | null>(null);
   const [tasks, setTasks] = useState<Task[] | null>(null);
+
+  const [popupTitle, setPopupTitle] = useState("");
+  const [popupContent, setPopupContent] = useState<ReactNode>();
+
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  function openProjectSettings() {
+    setPopupTitle("Ustawienia tropu");
+    setPopupContent(
+      <ProjectSettings project={project ? project : ({} as Project)} />
+    );
+
+    dialogRef.current?.showModal();
+  }
+
+  function openNewTaskPopup() {
+    setPopupTitle("Dodaj zadanie");
+    setPopupContent(<></>);
+
+    dialogRef.current?.showModal();
+  }
 
   useEffect(() => {
     if (userData?.projectId) {
@@ -47,36 +72,21 @@ export default function ProjectScreen() {
 
   return (
     <>
+      <Popup title={popupTitle} content={popupContent} ref={dialogRef} />
       {project ? (
         <div className="p-3 flex flex-col gap-6">
-          <h1>{project?.name}</h1>
+          <div className="flex justify-between">
+            <h1>{project?.name}</h1>
 
-          <section className="mt-3">
-            <p>
-              <span className="font-semibold">Nazwa: </span>
-              {project?.name}
-            </p>
+            <button
+              className="text-4xl bg-white hover:bg-white text-black"
+              onClick={openProjectSettings}
+            >
+              <IoSettingsOutline />
+            </button>
+          </div>
 
-            <p>
-              <span className="font-semibold">Cel: </span>
-              {project?.goal}
-            </p>
-
-            <p>
-              <span className="font-semibold">Lider: </span>
-              {project?.leader}
-            </p>
-
-            <p>
-              <span className="font-semibold">Nazwa zespołu: </span>
-              {project?.team}
-            </p>
-
-            <p>
-              <span className="font-semibold">Kod tropu: </span>
-              {project?.code}
-            </p>
-          </section>
+          <ProjectData project={project} />
 
           <section>
             <h2>Uczestnicy</h2>
@@ -93,7 +103,15 @@ export default function ProjectScreen() {
           </section>
 
           <section>
-            <h2>Zadania</h2>
+            <div className="flex justify-between">
+              <h2>Zadania</h2>
+              <button
+                className="text-4xl bg-white hover:bg-white text-black"
+                onClick={openNewTaskPopup}
+              >
+                <IoAdd />
+              </button>
+            </div>
 
             {tasks?.length ? (
               <div className="mt-3">
