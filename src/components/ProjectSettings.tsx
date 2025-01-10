@@ -1,7 +1,7 @@
 import {FormEvent, useState} from "react";
 import useAuth from "../hooks/useAuth";
 import {Project} from "../types/types";
-import {doc, setDoc} from "firebase/firestore";
+import {doc, setDoc, writeBatch} from "firebase/firestore";
 import {db} from "../firebase/firebase";
 
 interface Props {
@@ -40,6 +40,39 @@ export default function ProjectSettings({project}: Props) {
 
     await setDoc(projectDoc, {name, team, goal}, {merge: true})
       .then(() => location.reload())
+      .catch((err) => alert(err));
+
+    setLoading(false);
+  }
+
+  async function leaveProject(e: FormEvent) {
+    e.preventDefault();
+
+    setLoading(true);
+
+    const projectDoc = doc(db, `/projects/${project.code}`);
+    const usersDoc = doc(db, `/users/${userData?.id}`);
+
+    const batch = writeBatch(db);
+
+    const newMembers = project.members.filter((el) => el !== userData?.email);
+    const newMembersNames = project.membersNames.filter(
+      (el) => el !== userData?.name
+    );
+
+    batch.update(projectDoc, {
+      members: newMembers,
+      membersNames: newMembersNames,
+    });
+
+    batch.update(usersDoc, {
+      project: null,
+      projectId: null,
+    });
+
+    await batch
+      .commit()
+      .then(() => location.replace("/app/profile"))
       .catch((err) => alert(err));
 
     setLoading(false);
@@ -93,7 +126,7 @@ export default function ProjectSettings({project}: Props) {
               />
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row items-start gap-3">
               <button
                 type="submit"
                 disabled={!formHasChanged || loading}
@@ -115,9 +148,17 @@ export default function ProjectSettings({project}: Props) {
         </>
       )}
       {userData?.isLeader ? (
-        <button className="bg-red-500 hover:bg-red-600">Usuń trop</button>
+        <button className="bg-red-500 hover:bg-red-600" disabled>
+          Usuń trop
+        </button>
       ) : (
-        <button className="bg-red-500 hover:bg-red-600">Opuść trop</button>
+        <button
+          className="bg-red-500 hover:bg-red-600"
+          onClick={leaveProject}
+          disabled={loading}
+        >
+          Opuść trop
+        </button>
       )}
     </div>
   );

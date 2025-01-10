@@ -34,6 +34,11 @@ export default function JoinProjectForm({closePopup}: Props) {
             project: newData.name,
           });
 
+          console.log({
+            projectId: newData.code,
+            project: newData.name,
+          });
+
           batch.update(projectDoc, {
             membersNames: [...newData.membersNames, userData?.name],
             members: [...newData.members, userData?.email],

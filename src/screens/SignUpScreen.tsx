@@ -8,18 +8,30 @@ export default function LoginScreen() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function signUp(event: FormEvent) {
     event.preventDefault();
 
-    setLoading(true);
+    setIsLoading(true);
 
     await createUserWithEmailAndPassword(auth, email, password)
-      .then((user) => {
-        const usersRef = doc(db, "users", user.user.uid);
+      .then(async (user) => {
+        const usersRef = doc(db, `users/${user.user.uid}`);
 
-        setDoc(usersRef, {
+        console.log(user.user.email);
+        console.log(user.user.uid);
+
+        console.log({
+          name,
+          email,
+          id: user.user.uid,
+          project: null,
+          projectId: null,
+          isLeader: false,
+        });
+
+        await setDoc(usersRef, {
           name,
           email,
           id: user.user.uid,
@@ -28,10 +40,10 @@ export default function LoginScreen() {
           isLeader: false,
         }).catch((err) => alert(err));
       })
-      .then(() => location.replace("/app/profile"))
+      // .then(() => location.replace("/app/profile"))
       .catch((err) => alert(err));
 
-    setLoading(false);
+    setIsLoading(false);
   }
 
   return (
@@ -45,6 +57,8 @@ export default function LoginScreen() {
             type="text"
             required
             value={name}
+            min={3}
+            max={25}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
@@ -55,6 +69,8 @@ export default function LoginScreen() {
             type="email"
             required
             value={email}
+            min={9}
+            max={40}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -70,7 +86,11 @@ export default function LoginScreen() {
           />
         </div>
 
-        <button type="submit" className="self-center " disabled={loading}>
+        <button
+          type="submit"
+          className="self-center disabled:opacity-65"
+          disabled={isLoading}
+        >
           Zarejestruj się
         </button>
       </form>
