@@ -19,18 +19,6 @@ export default function LoginScreen() {
       .then(async (user) => {
         const usersRef = doc(db, `users/${user.user.uid}`);
 
-        console.log(user.user.email);
-        console.log(user.user.uid);
-
-        console.log({
-          name,
-          email,
-          id: user.user.uid,
-          project: null,
-          projectId: null,
-          isLeader: false,
-        });
-
         await setDoc(usersRef, {
           name,
           email,
@@ -40,7 +28,7 @@ export default function LoginScreen() {
           isLeader: false,
         }).catch((err) => alert(err));
       })
-      // .then(() => location.replace("/app/profile"))
+      .then(() => location.replace("/app/profile"))
       .catch((err) => alert(err));
 
     setIsLoading(false);

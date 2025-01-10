@@ -36,7 +36,7 @@ export default function ProfileScreen() {
       />
 
       <div className="p-3 flex flex-col">
-        <h1>
+        <h1 className="text-6xl sm:text-8xl">
           Witaj, <span className="text-blue-500">{userData?.name}</span>
         </h1>
         <div className="mt-12">
