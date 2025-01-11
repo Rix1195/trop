@@ -8,6 +8,7 @@ import {IoAdd, IoSettingsOutline} from "react-icons/io5";
 import {Popup} from "../components/Popup";
 import ProjectSettings from "../components/ProjectSettings";
 import ProjectData from "../components/ProjectData";
+import AddEditTaskForm from "../components/AddEditTaskForm";
 
 export default function ProjectScreen() {
   const {userData} = useAuth();
@@ -30,7 +31,22 @@ export default function ProjectScreen() {
 
   function openNewTaskPopup() {
     setPopupTitle("Dodaj zadanie");
-    setPopupContent(<></>);
+    setPopupContent(
+      <AddEditTaskForm project={project ? project : ({} as Project)} />
+    );
+
+    dialogRef.current?.showModal();
+  }
+
+  function editTask(task: Task) {
+    setPopupTitle("Edytuj zadanie");
+
+    setPopupContent(
+      <AddEditTaskForm
+        project={project ? project : ({} as Project)}
+        task={task}
+      />
+    );
 
     dialogRef.current?.showModal();
   }
@@ -133,6 +149,10 @@ export default function ProjectScreen() {
                         {formatDate(item.deadline)}
                       </p>
                     </div>
+
+                    <button onClick={() => editTask(item)}>
+                      Edytuj zadanie
+                    </button>
                   </div>
                 ))}
               </div>

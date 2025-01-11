@@ -25,4 +25,5 @@ export interface Task {
   user: string;
   body: string;
   deadline: Timestamp;
+  id: string;
 }

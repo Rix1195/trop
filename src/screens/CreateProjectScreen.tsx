@@ -10,11 +10,27 @@ export default function CreateProjectScreen() {
   const [goal, setGoal] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const {user, userData} = useAuth();
 
   async function createProject(event: FormEvent) {
     event.preventDefault();
+
+    if (name.length < 8 || name.length > 60) {
+      setError("Nazwa tropu musi się mieścić między 8 a 60 znakami");
+      return;
+    }
+
+    if (goal.length < 10 || goal.length > 300) {
+      setError("Cel musi się mieścić między 10 a 300 znakami");
+      return;
+    }
+
+    if (team.length < 4 || team.length > 30) {
+      setError("Nazwa patrolu musi się mieścić między 4 a 30 znakami");
+      return;
+    }
 
     setLoading(true);
 
@@ -87,8 +103,6 @@ export default function CreateProjectScreen() {
                 className="w-full"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                minLength={8}
-                maxLength={60}
               />
             </div>
 
@@ -99,8 +113,6 @@ export default function CreateProjectScreen() {
                 className="w-full"
                 value={team}
                 onChange={(e) => setTeam(e.target.value)}
-                minLength={4}
-                maxLength={30}
               />
             </div>
 
@@ -110,8 +122,6 @@ export default function CreateProjectScreen() {
                 rows={5}
                 value={goal}
                 onChange={(e) => setGoal(e.target.value)}
-                minLength={10}
-                maxLength={300}
               ></textarea>
             </div>
 
@@ -124,6 +134,8 @@ export default function CreateProjectScreen() {
                 faktycznego patrolowego.
               </p>
             </section>
+
+            {error && <p className="text-red-500">{error}</p>}
 
             <button type="submit" className="self-center" disabled={loading}>
               Dodaj trop

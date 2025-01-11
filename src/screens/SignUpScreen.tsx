@@ -9,9 +9,25 @@ export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   async function signUp(event: FormEvent) {
     event.preventDefault();
+
+    if (name.length < 3 || name.length > 25) {
+      setError("Nazwa uzytkownika musi sie mieścić między 3 a 25 znakami");
+      return;
+    }
+
+    if (email.length < 9 || email.length > 40) {
+      setError("Email musi sie mieścić między 9 a 40 znakami");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Hasło musi mieć przynajmnie 6 znaków");
+      return;
+    }
 
     setIsLoading(true);
 
@@ -43,10 +59,7 @@ export default function LoginScreen() {
           <p>Imię:</p>
           <input
             type="text"
-            required
             value={name}
-            min={3}
-            max={25}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
@@ -55,10 +68,7 @@ export default function LoginScreen() {
           <p>Email:</p>
           <input
             type="email"
-            required
             value={email}
-            min={9}
-            max={40}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -66,13 +76,13 @@ export default function LoginScreen() {
         <div>
           <p>Hasło:</p>
           <input
-            minLength={6}
-            required
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+
+        {error && <p className="text-red-500">{error}</p>}
 
         <button
           type="submit"
