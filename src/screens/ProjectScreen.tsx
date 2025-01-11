@@ -23,7 +23,10 @@ export default function ProjectScreen() {
   function openProjectSettings() {
     setPopupTitle("Ustawienia tropu");
     setPopupContent(
-      <ProjectSettings project={project ? project : ({} as Project)} />
+      <ProjectSettings
+        project={project ? project : ({} as Project)}
+        tasks={tasks ? tasks : ([] as Task[])}
+      />
     );
 
     dialogRef.current?.showModal();
@@ -91,8 +94,10 @@ export default function ProjectScreen() {
       <Popup title={popupTitle} content={popupContent} ref={dialogRef} />
       {project ? (
         <div className="p-3 flex flex-col gap-6 w-screen pt-24">
-          <div className="flex justify-between w-full flex-wrap">
-            <h1 className="sm:text-8xl text-5xl">{project?.name}</h1>
+          <div className="flex justify-between">
+            <h1 className="text-6xl sm:text-8xl break-words">
+              {project?.name}
+            </h1>
 
             <button
               className="text-4xl bg-white hover:bg-white text-black"

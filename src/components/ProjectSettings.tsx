@@ -1,6 +1,6 @@
 import {FormEvent, useState} from "react";
 import useAuth from "../hooks/useAuth";
-import {Project, UserData} from "../types/types";
+import {Project, Task, UserData} from "../types/types";
 import {
   collection,
   doc,
@@ -14,9 +14,10 @@ import EditProjectForm from "./EditProjectForm";
 
 interface Props {
   project: Project;
+  tasks: Task[];
 }
 
-export default function ProjectSettings({project}: Props) {
+export default function ProjectSettings({project, tasks}: Props) {
   const [loading, setLoading] = useState(false);
 
   const {userData} = useAuth();
@@ -70,12 +71,13 @@ export default function ProjectSettings({project}: Props) {
       const projectRef = doc(db, `/projects/${project.code}`);
 
       const users: UserData[] = [];
+      const tasksIds: string[] = [];
 
       await getDocs(usersQuery).then((docs) => {
         docs.forEach((doc) => users.push(doc.data().id));
       });
 
-      console.log(users);
+      tasks.forEach((task) => tasksIds.push(task.id));
 
       const batch = writeBatch(db);
 
@@ -87,6 +89,12 @@ export default function ProjectSettings({project}: Props) {
           projectId: null,
           isLeader: false,
         });
+      });
+
+      tasksIds.forEach((id) => {
+        const taskRef = doc(db, `/projects/${project.code}/tasks/${id}`);
+
+        batch.delete(taskRef);
       });
 
       batch.delete(projectRef);
