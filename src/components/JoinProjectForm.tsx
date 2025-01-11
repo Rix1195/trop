@@ -60,7 +60,7 @@ export default function JoinProjectForm({closePopup}: Props) {
         onChange={(e) => setCode(e.target.value)}
       ></input>
 
-      <div className="flex gap-3">
+      <div className="flex flex-col sm:flex-row gap-3">
         <button
           onClick={handleFormSubmition}
           type="submit"

@@ -35,7 +35,7 @@ export default function ProfileScreen() {
         content={<JoinProjectForm closePopup={closePopup} />}
       />
 
-      <div className="p-3 flex flex-col">
+      <div className="p-3 flex flex-col pt-24">
         <h1 className="text-6xl sm:text-8xl">
           Witaj, <span className="text-blue-500">{userData?.name}</span>
         </h1>

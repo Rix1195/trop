@@ -90,9 +90,9 @@ export default function ProjectScreen() {
     <>
       <Popup title={popupTitle} content={popupContent} ref={dialogRef} />
       {project ? (
-        <div className="p-3 flex flex-col gap-6">
-          <div className="flex justify-between">
-            <h1>{project?.name}</h1>
+        <div className="p-3 flex flex-col gap-6 w-screen pt-24">
+          <div className="flex justify-between w-full flex-wrap">
+            <h1 className="sm:text-8xl text-5xl">{project?.name}</h1>
 
             <button
               className="text-4xl bg-white hover:bg-white text-black"
@@ -105,7 +105,7 @@ export default function ProjectScreen() {
           <ProjectData project={project} />
 
           <section>
-            <h2>Uczestnicy</h2>
+            <h2 className="text-4xl sm:text-6xl">Uczestnicy</h2>
             <ul className="text-2xl">
               {project?.membersNames.map((member, index) => (
                 <li key={index}>
@@ -120,7 +120,7 @@ export default function ProjectScreen() {
 
           <section>
             <div className="flex justify-between">
-              <h2>Zadania</h2>
+              <h2 className="text-4xl sm:text-6xl">Zadania</h2>
               <button
                 className="text-4xl bg-white hover:bg-white text-black"
                 onClick={openNewTaskPopup}
@@ -162,7 +162,7 @@ export default function ProjectScreen() {
           </section>
         </div>
       ) : (
-        <div className="p-3">
+        <div className="p-3 flex flex-col justify-center h-screen">
           <h1>Nie nalezysz do tropu!</h1>
           <p className="mt-3">
             W swoim profilu znajdziesz przycisk "Dołącz do tropu". Wpisz kod i

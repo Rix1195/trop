@@ -92,7 +92,7 @@ export default function CreateProjectScreen() {
           </div>
         </>
       ) : (
-        <>
+        <div className="pt-24">
           <h1>Stwórz trop</h1>
 
           <form className="flex flex-col gap-6 mt-4" onSubmit={createProject}>
@@ -137,11 +137,15 @@ export default function CreateProjectScreen() {
 
             {error && <p className="text-red-500">{error}</p>}
 
-            <button type="submit" className="self-center" disabled={loading}>
+            <button
+              type="submit"
+              className="mb-3 self-start"
+              disabled={loading}
+            >
               Dodaj trop
             </button>
           </form>
-        </>
+        </div>
       )}
     </div>
   );

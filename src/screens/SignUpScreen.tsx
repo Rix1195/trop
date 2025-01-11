@@ -52,7 +52,7 @@ export default function LoginScreen() {
 
   return (
     <div className="flex flex-col items-center justify-center h-[90vh] p-3 gap-6 sm:pt-0 pt-52">
-      <h1>Zarejestruj się</h1>
+      <h1 className="text-center">Zarejestruj się</h1>
 
       <form className="w-full flex flex-col gap-5" onSubmit={signUp}>
         <div>

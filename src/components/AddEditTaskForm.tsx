@@ -92,6 +92,7 @@ export default function AddEditTaskForm({project, task}: Props) {
 
     if (!deadline) {
       setError("Wybierz właściwy termin");
+      return;
     }
 
     setLoading(true);
