@@ -99,12 +99,16 @@ export default function AddEditTaskForm({project, task}: Props) {
 
     const tasksRef = doc(db, `/projects/${project.code}/tasks/${task?.id}`);
 
-    await setDoc(tasksRef, {
-      name,
-      body,
-      user,
-      deadline: Timestamp.fromDate(new Date(deadline)),
-    })
+    await setDoc(
+      tasksRef,
+      {
+        name,
+        body,
+        user,
+        deadline: Timestamp.fromDate(new Date(deadline)),
+      },
+      {merge: true}
+    )
       .then(() => location.reload())
       .catch((err) => alert(err));
   }
