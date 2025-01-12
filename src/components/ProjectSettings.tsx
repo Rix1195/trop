@@ -27,7 +27,11 @@ export default function ProjectSettings({project, tasks}: Props) {
 
     setLoading(true);
 
-    if (confirm("Czy chcesz opuścić trop?") === true) {
+    if (
+      confirm(
+        "Czy chcesz opuścić trop?\nOpuszczenie tropu spowoduje usunięcie wszystkich twoich zadań!"
+      ) === true
+    ) {
       const projectDoc = doc(db, `/projects/${project.code}`);
       const usersDoc = doc(db, `/users/${userData?.id}`);
 
@@ -46,6 +50,13 @@ export default function ProjectSettings({project, tasks}: Props) {
       batch.update(usersDoc, {
         project: null,
         projectId: null,
+      });
+
+      tasks.forEach((task) => {
+        if (task.user === userData?.name) {
+          const taskDoc = doc(db, `projects/${project.code}/tasks/${task.id}`);
+          batch.delete(taskDoc);
+        }
       });
 
       await batch
