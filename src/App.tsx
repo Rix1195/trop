@@ -8,9 +8,14 @@ import DashboardScreensLayout from "./screens/DashboardScreensLayout";
 import {AuthContextProvider} from "./store/auth-context";
 import ProjectScreen from "./screens/ProjectScreen";
 import CreateProjectScreen from "./screens/CreateProjectScreen";
+import PageNotFoundScreen from "./screens/PageNotFoundScreen";
 
 function App() {
   const router = createBrowserRouter([
+    {
+      path: "*",
+      element: <PageNotFoundScreen />,
+    },
     {
       path: "/",
       element: <MainScreensLayout />,
