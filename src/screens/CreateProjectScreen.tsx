@@ -10,6 +10,7 @@ export default function CreateProjectScreen() {
   const [team, setTeam] = useState("");
   const [goal, setGoal] = useState("");
   const [category, setCategory] = useState("Braterstwo");
+  const [doesProjectHaveService, setDoesProjectHaveService] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -50,6 +51,7 @@ export default function CreateProjectScreen() {
       members: [userData?.email],
       membersNames: [userData?.name],
       category: category,
+      hasService: doesProjectHaveService,
     });
 
     const usersRef = doc(db, "users", user?.uid ? user?.uid : "");
@@ -141,6 +143,20 @@ export default function CreateProjectScreen() {
                   </option>
                 ))}
               </select>
+            </div>
+
+            <div
+              className="flex items-center gap-4 cursor-pointer"
+              onClick={() =>
+                setDoesProjectHaveService((prevState) => !prevState)
+              }
+            >
+              <input
+                type="checkbox"
+                className="w-7 h-7"
+                checked={doesProjectHaveService}
+              />
+              <p>Czy trop zawiera słuzbę?</p>
             </div>
 
             <section>

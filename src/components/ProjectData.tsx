@@ -23,6 +23,11 @@ export default function ProjectData({project}: Props) {
       </p>
 
       <p>
+        <span className="font-semibold">Czy posiada słuzbe: </span>
+        {project?.hasService ? "Tak" : "Nie"}
+      </p>
+
+      <p>
         <span className="font-semibold">Lider: </span>
         {project?.leader}
       </p>

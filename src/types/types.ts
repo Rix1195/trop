@@ -28,7 +28,7 @@ export interface Project {
   members: Array<string>;
   tasks: Map<string, string>;
   membersNames: Array<string>;
-  doesProjectHaveService: boolean;
+  hasService: boolean;
   category: ProjectCategory;
 }
 

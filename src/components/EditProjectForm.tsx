@@ -15,6 +15,9 @@ export default function EditProjectForm({project, loading, setLoading}: Props) {
   const [team, setTeam] = useState(project.team);
   const [goal, setGoal] = useState(project.goal);
   const [category, setCategory] = useState(project.category.toString());
+  const [doesProjectHaveService, setDoesProjectHaveService] = useState(
+    project.hasService
+  );
 
   const [error, setError] = useState("");
 
@@ -24,7 +27,8 @@ export default function EditProjectForm({project, loading, setLoading}: Props) {
     name !== project.name ||
     team !== project.team ||
     goal !== project.goal ||
-    category !== project.category;
+    category !== project.category ||
+    doesProjectHaveService !== project.hasService;
 
   function resetEditProjectForm(e: FormEvent) {
     e.preventDefault();
@@ -33,6 +37,7 @@ export default function EditProjectForm({project, loading, setLoading}: Props) {
     setTeam(project.team);
     setGoal(project.goal);
     setCategory(project.category);
+    setDoesProjectHaveService(project.hasService);
   }
 
   async function editProject(e: FormEvent) {
@@ -57,7 +62,11 @@ export default function EditProjectForm({project, loading, setLoading}: Props) {
 
     setLoading(true);
 
-    await setDoc(projectDoc, {name, team, goal, category}, {merge: true})
+    await setDoc(
+      projectDoc,
+      {name, team, goal, category, hasService: doesProjectHaveService},
+      {merge: true}
+    )
       .then(() => location.reload())
       .catch((err) => alert(err));
 
@@ -113,6 +122,20 @@ export default function EditProjectForm({project, loading, setLoading}: Props) {
                   </option>
                 ))}
               </select>
+            </div>
+
+            <div
+              className="flex items-center gap-4 cursor-pointer"
+              onClick={() =>
+                setDoesProjectHaveService((prevState) => !prevState)
+              }
+            >
+              <input
+                type="checkbox"
+                className="w-7 h-7"
+                checked={doesProjectHaveService}
+              />
+              <p>Czy trop zawiera słuzbę?</p>
             </div>
 
             {error && <p className="text-red-500">{error}</p>}
