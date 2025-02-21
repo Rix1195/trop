@@ -18,6 +18,11 @@ export default function ProjectData({project}: Props) {
       </p>
 
       <p>
+        <span className="font-semibold">Kategoria: </span>
+        {project?.category}
+      </p>
+
+      <p>
         <span className="font-semibold">Lider: </span>
         {project?.leader}
       </p>

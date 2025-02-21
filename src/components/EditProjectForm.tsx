@@ -1,5 +1,5 @@
 import {useState, FormEvent, Dispatch, SetStateAction} from "react";
-import {Project} from "../types/types";
+import {Project, ProjectCategory} from "../types/types";
 import useAuth from "../hooks/useAuth";
 import {db} from "../firebase/firebase";
 import {doc, setDoc} from "firebase/firestore";
@@ -14,13 +14,17 @@ export default function EditProjectForm({project, loading, setLoading}: Props) {
   const [name, setName] = useState(project.name);
   const [team, setTeam] = useState(project.team);
   const [goal, setGoal] = useState(project.goal);
+  const [category, setCategory] = useState(project.category.toString());
 
   const [error, setError] = useState("");
 
   const {userData} = useAuth();
 
-  let formHasChanged =
-    name !== project.name || team !== project.team || goal !== project.goal;
+  const formHasChanged =
+    name !== project.name ||
+    team !== project.team ||
+    goal !== project.goal ||
+    category !== project.category;
 
   function resetEditProjectForm(e: FormEvent) {
     e.preventDefault();
@@ -28,9 +32,7 @@ export default function EditProjectForm({project, loading, setLoading}: Props) {
     setName(project.name);
     setTeam(project.team);
     setGoal(project.goal);
-
-    formHasChanged =
-      name !== project.name || team !== project.team || goal !== project.goal;
+    setCategory(project.category);
   }
 
   async function editProject(e: FormEvent) {
@@ -55,7 +57,7 @@ export default function EditProjectForm({project, loading, setLoading}: Props) {
 
     setLoading(true);
 
-    await setDoc(projectDoc, {name, team, goal}, {merge: true})
+    await setDoc(projectDoc, {name, team, goal, category}, {merge: true})
       .then(() => location.reload())
       .catch((err) => alert(err));
 
@@ -96,6 +98,21 @@ export default function EditProjectForm({project, loading, setLoading}: Props) {
                 value={team}
                 onChange={(e) => setTeam(e.target.value)}
               />
+            </div>
+
+            <div>
+              <p>Kategoria</p>
+              <select
+                className="text-2xl px-3 py-1 bg-gray-300"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                {Object.keys(ProjectCategory).map((key) => (
+                  <option key={key} value={key}>
+                    {key}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {error && <p className="text-red-500">{error}</p>}

@@ -9,6 +9,16 @@ export interface UserData {
   isLeader: boolean;
 }
 
+export enum ProjectCategory {
+  Braterstwo = "Braterstwo",
+  Człowiek = "Człowiek",
+  Inicjatywa = "Inicjatywa",
+  Odkrywanie = "Odkrywanie",
+  Zaradność = "Zaradność",
+  Ojczyzna = "Ojczyzna",
+  Natura = "Natura",
+}
+
 export interface Project {
   code: string;
   goal: string;
@@ -18,6 +28,8 @@ export interface Project {
   members: Array<string>;
   tasks: Map<string, string>;
   membersNames: Array<string>;
+  doesProjectHaveService: boolean;
+  category: ProjectCategory;
 }
 
 export interface Task {

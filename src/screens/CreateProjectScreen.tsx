@@ -3,11 +3,13 @@ import {db} from "../firebase/firebase";
 import {FormEvent, useState} from "react";
 import useAuth from "../hooks/useAuth";
 import {Link} from "react-router-dom";
+import {ProjectCategory} from "../types/types";
 
 export default function CreateProjectScreen() {
   const [name, setName] = useState("");
   const [team, setTeam] = useState("");
   const [goal, setGoal] = useState("");
+  const [category, setCategory] = useState("Braterstwo");
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -47,6 +49,7 @@ export default function CreateProjectScreen() {
       leader: userData?.name,
       members: [userData?.email],
       membersNames: [userData?.name],
+      category: category,
     });
 
     const usersRef = doc(db, "users", user?.uid ? user?.uid : "");
@@ -123,6 +126,21 @@ export default function CreateProjectScreen() {
                 value={goal}
                 onChange={(e) => setGoal(e.target.value)}
               ></textarea>
+            </div>
+
+            <div>
+              <p>Kategoria tropu</p>
+              <select
+                className="text-2xl px-3 py-1 bg-gray-300"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                {Object.keys(ProjectCategory).map((key) => (
+                  <option key={key} value={key}>
+                    {key}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <section>
