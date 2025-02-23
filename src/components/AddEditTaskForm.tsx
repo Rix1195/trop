@@ -16,6 +16,7 @@ export default function AddEditTaskForm({project, task}: Props) {
   const [body, setBody] = useState("");
   const [user, setUser] = useState(userData?.name);
   const [deadline, setDeadline] = useState("");
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,18 +30,23 @@ export default function AddEditTaskForm({project, task}: Props) {
       setBody(task.body);
       setUser(task.user);
       setDeadline(deadline.toISOString().slice(0, 16));
+      setIsCompleted(task.isCompleted);
     }
-
-    setError("");
   }, [task]);
 
-  function clearForm(e: FormEvent) {
+  function resetForm(e: FormEvent) {
     e.preventDefault();
 
-    setName("");
-    setBody("");
-    setUser("");
-    setDeadline("");
+    if (task) {
+      const deadline = task.deadline.toDate();
+      deadline.setMinutes(deadline.getMinutes() - deadline.getTimezoneOffset());
+
+      setName(task.name);
+      setBody(task.body);
+      setUser(task.user);
+      setDeadline(deadline.toISOString().slice(0, 16));
+      setIsCompleted(task.isCompleted);
+    }
   }
 
   async function addTask(e: FormEvent) {
@@ -72,6 +78,7 @@ export default function AddEditTaskForm({project, task}: Props) {
       user,
       deadline: Timestamp.fromDate(new Date(deadline)),
       id,
+      isCompleted: false,
     })
       .then(() => location.reload())
       .catch((err) => alert(err));
@@ -106,6 +113,7 @@ export default function AddEditTaskForm({project, task}: Props) {
         body,
         user,
         deadline: Timestamp.fromDate(new Date(deadline)),
+        isCompleted,
       },
       {merge: true}
     )
@@ -166,14 +174,24 @@ export default function AddEditTaskForm({project, task}: Props) {
         onChange={(e) => setDeadline(e.target.value)}
       />
 
+      {task && (
+        <div
+          className="flex items-center justify-between"
+          onClick={() => setIsCompleted((prevState) => !prevState)}
+        >
+          <p>Czy zadanie jest skończone?</p>
+          <input type="checkbox" checked={isCompleted} className="w-6 h-6" />
+        </div>
+      )}
+
       {error && <p className="text-red-500">{error}</p>}
 
       <div className="flex flex-col sm:flex-row items-start gap-3">
         <button onClick={task ? editTask : addTask} disabled={loading}>
           {task ? "Edytuj zadanie" : "Dodaj zadanie"}
         </button>
-        <button onClick={clearForm} disabled={loading}>
-          Wyczyść
+        <button onClick={resetForm} disabled={loading}>
+          Resetuj
         </button>
       </div>
 

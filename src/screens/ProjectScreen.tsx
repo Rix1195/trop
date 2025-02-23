@@ -1,4 +1,4 @@
-import {collection, doc, getDoc, getDocs, Timestamp} from "firebase/firestore";
+import {collection, doc, getDoc, getDocs} from "firebase/firestore";
 import {ReactNode, useEffect, useRef, useState} from "react";
 import {db} from "../firebase/firebase";
 import useAuth from "../hooks/useAuth";
@@ -9,6 +9,7 @@ import {Popup} from "../components/Popup";
 import ProjectSettings from "../components/ProjectSettings";
 import ProjectData from "../components/ProjectData";
 import AddEditTaskForm from "../components/AddEditTaskForm";
+import TaskListTile from "../components/TaskListTile";
 
 export default function ProjectScreen() {
   const {userData} = useAuth();
@@ -79,19 +80,6 @@ export default function ProjectScreen() {
     }
   }, [userData?.projectId]);
 
-  function formatDate(timestamp: Timestamp) {
-    const date = timestamp.toDate();
-
-    return `${date.getDate().toString().padStart(2, "0")}.${(
-      date.getMonth() + 1
-    )
-      .toString()
-      .padStart(2, "0")}.${date.getFullYear()} ${date
-      .getHours()
-      .toString()
-      .padStart(2, "0")}:${date.getMinutes().toString().padStart(2, "0")}`;
-  }
-
   return (
     <>
       <Popup title={popupTitle} content={popupContent} ref={dialogRef} />
@@ -140,28 +128,7 @@ export default function ProjectScreen() {
             {tasks?.length ? (
               <div className="mt-3">
                 {tasks.map((item, index) => (
-                  <div
-                    key={index}
-                    className="break-words border-4 border-blue-500 p-3 flex flex-col gap-2 mb-2"
-                  >
-                    <h3>{item.name}</h3>
-                    <p>{item.body}</p>
-                    <div className="flex flex-col sm:flex-row justify-between w-full">
-                      <p>
-                        <span className="font-semibold">Osoba: </span>
-                        {item.user}
-                      </p>
-
-                      <p>
-                        <span className="font-semibold">Termin: </span>
-                        {formatDate(item.deadline)}
-                      </p>
-                    </div>
-
-                    <button onClick={() => editTask(item)}>
-                      Edytuj zadanie
-                    </button>
-                  </div>
+                  <TaskListTile task={item} index={index} editTask={editTask} />
                 ))}
               </div>
             ) : (
