@@ -115,14 +115,15 @@ export default function SummarizeProjectScreen() {
           />
         ))}
       </div>
+      <div className="flex gap-3">
+        <a href="mailto:zuzanna.sobczyk@zhp.pl">
+          <button>Wyślij email druzynowemu</button>
+        </a>
 
-      <a href="mailto:zuzanna.sobczyk@zhp.pl">
-        <button>Wyślij email druzynowemu</button>
-      </a>
-
-      <button className="bg-red-500 hover:bg-red-600" onClick={deleteProject}>
-        Usuń trop
-      </button>
+        <button className="bg-red-500 hover:bg-red-600" onClick={deleteProject}>
+          Usuń trop
+        </button>
+      </div>
     </div>
   );
 }
