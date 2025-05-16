@@ -9,6 +9,7 @@ import {AuthContextProvider} from "./store/auth-context";
 import ProjectScreen from "./screens/ProjectScreen";
 import CreateProjectScreen from "./screens/CreateProjectScreen";
 import PageNotFoundScreen from "./screens/PageNotFoundScreen";
+import SummarizeProjectScreen from "./screens/SummarizeProjectScreen";
 
 function App() {
   const router = createBrowserRouter([
@@ -49,6 +50,10 @@ function App() {
         {
           path: "project/create",
           element: <CreateProjectScreen />,
+        },
+        {
+          path: "project/summarize",
+          element: <SummarizeProjectScreen />,
         },
       ],
     },

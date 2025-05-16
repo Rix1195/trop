@@ -128,7 +128,12 @@ export default function ProjectScreen() {
             {tasks?.length ? (
               <div className="mt-3">
                 {tasks.map((item, index) => (
-                  <TaskListTile task={item} index={index} editTask={editTask} />
+                  <TaskListTile
+                    task={item}
+                    index={index}
+                    editTask={editTask}
+                    showEditButton={true}
+                  />
                 ))}
               </div>
             ) : (

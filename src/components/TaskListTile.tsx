@@ -5,9 +5,15 @@ interface Props {
   task: Task;
   index: number;
   editTask: (task: Task) => void;
+  showEditButton: boolean;
 }
 
-export default function TaskListTile({task, index, editTask}: Props) {
+export default function TaskListTile({
+  task,
+  index,
+  editTask,
+  showEditButton,
+}: Props) {
   function formatDate(timestamp: Timestamp) {
     const date = timestamp.toDate();
 
@@ -48,7 +54,9 @@ export default function TaskListTile({task, index, editTask}: Props) {
         {task.isCompleted ? "Tak" : "Nie"}
       </p>
 
-      <button onClick={() => editTask(task)}>Edytuj zadanie</button>
+      {showEditButton && (
+        <button onClick={() => editTask(task)}>Edytuj zadanie</button>
+      )}
     </div>
   );
 }

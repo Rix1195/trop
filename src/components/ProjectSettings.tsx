@@ -11,6 +11,7 @@ import {
 } from "firebase/firestore";
 import {db} from "../firebase/firebase";
 import EditProjectForm from "./EditProjectForm";
+import {Link} from "react-router-dom";
 
 interface Props {
   project: Project;
@@ -132,17 +133,28 @@ export default function ProjectSettings({project, tasks}: Props) {
       />
 
       {userData?.isLeader ? (
-        <button className="bg-red-500 hover:bg-red-600" onClick={deleteProject}>
-          Usuń trop
-        </button>
+        <div className="flex gap-3">
+          <button
+            className="bg-red-500 hover:bg-red-600"
+            onClick={deleteProject}
+          >
+            Usuń trop
+          </button>
+
+          <Link to={"/app/project/summarize"}>
+            <button>Zakończ trop</button>
+          </Link>
+        </div>
       ) : (
-        <button
-          className="bg-red-500 hover:bg-red-600"
-          onClick={leaveProject}
-          disabled={loading}
-        >
-          Opuść trop
-        </button>
+        <div className="flex gap-3">
+          <button
+            className="bg-red-500 hover:bg-red-600"
+            onClick={leaveProject}
+            disabled={loading}
+          >
+            Opuść trop
+          </button>
+        </div>
       )}
     </div>
   );
