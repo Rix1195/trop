@@ -3,6 +3,8 @@ import {Project, Task} from "../types/types";
 import {deleteDoc, doc, setDoc, Timestamp} from "firebase/firestore";
 import {db} from "../firebase/firebase";
 import useAuth from "../hooks/useAuth";
+import IsTaskCompletedCheckbox from "./IsTaskCompletedCheckbox";
+import SubTasksForm from "./SubTasksForm";
 
 interface Props {
   project: Project;
@@ -17,6 +19,8 @@ export default function AddEditTaskForm({project, task}: Props) {
   const [user, setUser] = useState(userData?.name);
   const [deadline, setDeadline] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
+  const [subTasks, setSubTasks] = useState<Array<string>>([]);
+  const [newSubTask, setNewSubTask] = useState("");
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,6 +35,7 @@ export default function AddEditTaskForm({project, task}: Props) {
       setUser(task.user);
       setDeadline(deadline.toISOString().slice(0, 16));
       setIsCompleted(task.isCompleted);
+      setSubTasks(task.subTasks);
     }
   }, [task]);
 
@@ -46,6 +51,7 @@ export default function AddEditTaskForm({project, task}: Props) {
       setUser(task.user);
       setDeadline(deadline.toISOString().slice(0, 16));
       setIsCompleted(task.isCompleted);
+      setSubTasks(task.subTasks);
     }
   }
 
@@ -79,6 +85,7 @@ export default function AddEditTaskForm({project, task}: Props) {
       deadline: Timestamp.fromDate(new Date(deadline)),
       id,
       isCompleted: false,
+      subTasks,
     })
       .then(() => location.reload())
       .catch((err) => alert(err));
@@ -114,6 +121,7 @@ export default function AddEditTaskForm({project, task}: Props) {
         user,
         deadline: Timestamp.fromDate(new Date(deadline)),
         isCompleted,
+        subTasks,
       },
       {merge: true}
     )
@@ -174,14 +182,19 @@ export default function AddEditTaskForm({project, task}: Props) {
         onChange={(e) => setDeadline(e.target.value)}
       />
 
+      <IsTaskCompletedCheckbox
+        task={task ? task : ({} as Task)}
+        isCompleted={isCompleted}
+        setIsCompleted={setIsCompleted}
+      />
+
       {task && (
-        <div
-          className="flex items-center justify-between"
-          onClick={() => setIsCompleted((prevState) => !prevState)}
-        >
-          <p>Czy zadanie jest skończone?</p>
-          <input type="checkbox" checked={isCompleted} className="w-6 h-6" />
-        </div>
+        <SubTasksForm
+          newSubTask={newSubTask}
+          setNewSubTask={setNewSubTask}
+          subTasks={subTasks}
+          setSubTasks={setSubTasks}
+        />
       )}
 
       {error && <p className="text-red-500">{error}</p>}

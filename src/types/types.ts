@@ -38,5 +38,6 @@ export interface Task {
   body: string;
   deadline: Timestamp;
   isCompleted: boolean;
+  subTasks: Array<string>;
   id: string;
 }
